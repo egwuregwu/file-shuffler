@@ -36,8 +36,8 @@ int main(int argc, char* argv[])
     int fileCount = 1;
 
     for (int i = 0;; i++)
-    {
-        if (strcmp(fgets(buffer, 150, outputFile), "") == 0)
+    {       //null means EOF !!
+        if (fgets(buffer, 150, outputFile) == NULL)
             break;
         strcpy(files[i], buffer);
         fileCount++;
