@@ -18,5 +18,5 @@ gcc -o shuffler shuffler.c
 ### TODO
 !!! Removing prefixes  
 !! Customizible prefix length  
-! refactor
+! refactor  
 ? custom prefix style (make it more distinct)  
