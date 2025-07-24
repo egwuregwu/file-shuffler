@@ -4,29 +4,36 @@
 
 #define HEX_LENGTH 2
 
-char HEX_VALUES[] = "0123456789ABCDEF";
-
 void renameFile(char* file_name);
 char* getRandomHex(int);
+
+char HEX_VALUES[] = "0123456789ABCDEF";
 
 char* programName;
 
 int main(int argc, char* argv[])
-{
+{ 
     int programName_length = strlen(argv[0]);
     programName = malloc(programName_length + 1);
     strncpy(programName, argv[0], programName_length);
 
+    for (char* i = programName; *(i+2); i++)
+    {    
+        *i = *(i+2);
+        *(i+1) = '\0';
+    }
+    //by default, argv[0] starts with a "./"
+
     char workingDirectory[150];
     
-    system("cd > out");
+    system("pwd > out");
 
     FILE *outputFile;
     outputFile = fopen("out", "r");
     fgets(workingDirectory, 150, outputFile);
     fclose(outputFile);
 
-    system("dir /B > out");
+    system("ls > out");
 
     outputFile = fopen("out", "r");
 
@@ -37,7 +44,7 @@ int main(int argc, char* argv[])
 
     for (int i = 0;; i++)
     {       //null means EOF !!
-        if (fgets(buffer, 150, outputFile) == NULL)
+        if (fgets(buffer, 150, outputFile) == NULL || buffer[0] == '\n')
             break;
         strcpy(files[i], buffer);
         fileCount++;
@@ -45,12 +52,8 @@ int main(int argc, char* argv[])
 
     fclose(outputFile);
 
-    system("del /F out");
+    system("rm -f out");
 
-    // for (int i = 0; i < fileCount; i++)
-    // {
-    //     printf(files[i]);
-    // }
 
     if (strncmp(workingDirectory, "F:\\", 3) == 0)
     {
@@ -90,6 +93,7 @@ void renameFile(char* file_name)
     if (
         strcmp(file_name, programName) == 0 || 
         strcmp(file_name, "shuffler.c") == 0 || 
+        strcmp(file_name, "out") == 0 ||
         strcmp(file_name, "") == 0
     )
         return;
@@ -97,8 +101,10 @@ void renameFile(char* file_name)
 
     char* hex_value = getRandomHex(HEX_LENGTH);
 
-    char renameCommand[250];
-    snprintf(renameCommand, sizeof(renameCommand), "ren \"%s\" \"%s %s\"", file_name, hex_value, file_name);
+    const size_t MAX_COMMAND_LENGTH = 250;
+    char renameCommand[MAX_COMMAND_LENGTH + 1];
+
+    snprintf(renameCommand, MAX_COMMAND_LENGTH, "mv \"%s\" \"%s %s\"", file_name, hex_value, file_name);
     printf("%s\n", renameCommand);
     system(renameCommand);
 
