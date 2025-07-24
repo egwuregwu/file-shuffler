@@ -3,7 +3,7 @@ Shuffles files in the binary's folder by adding 2 hex numbers and a space before
 
 for example:  
 file  
-\/  
+\\/  
 D3 file  
   
 For now, only works on Windows systems, using a helper file to write cmd command outputs to.  
