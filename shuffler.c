@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
 
 #define HEX_LENGTH 2
 
@@ -37,6 +38,8 @@ int main(int argc, char* argv[])
     fclose(outputFile);
 
     system("rm -f out");
+
+    srand(time(NULL));
 
     for (int i = 0; i < fileCount; i++)
     {
