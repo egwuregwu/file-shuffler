@@ -4,20 +4,14 @@
 
 #define HEX_LENGTH 2
 
-void renameFile(char* file_name);
+void renameFile(char* file_name, char* main_name);
 char* getRandomHex(int);
 
 char HEX_VALUES[] = "0123456789ABCDEF";
 
-char* programName;
-
 int main(int argc, char* argv[])
 { 
-    int programName_length = strlen(argv[0]);
-    programName = malloc(programName_length + 1);
-    strncpy(programName, argv[0], programName_length);
-
-    for (char* i = programName; *(i+2); i++)
+    for (char* i = argv[0]; *(i+2); i++)
     {    
         *i = *(i+2);
         *(i+1) = '\0';
@@ -60,7 +54,7 @@ int main(int argc, char* argv[])
     start:
         for (int i = 0; i < fileCount; i++)
         {
-            renameFile(files[i]);
+            renameFile(files[i], argv[0]);
         }
         
     } else {
@@ -75,12 +69,10 @@ int main(int argc, char* argv[])
             goto start;
     }
 
-    free(programName);
-
     return 0;
 }
 
-void renameFile(char* file_name)
+void renameFile(char* file_name, char* main_name)
 {
     for (char* nl = file_name; *nl; nl++)
     {
@@ -91,7 +83,7 @@ void renameFile(char* file_name)
     }
     
     if (
-        strcmp(file_name, programName) == 0 || 
+        strcmp(file_name, main_name) == 0 || 
         strcmp(file_name, "shuffler.c") == 0 || 
         strcmp(file_name, "out") == 0 ||
         strcmp(file_name, "") == 0
