@@ -14,9 +14,3 @@ just compile the shuffler.c file with your compiler of choice, e.g.
 ```
 gcc -o shuffler shuffler.c
 ```
-
-### TODO
-!!! Removing prefixes  
-!! Customizible prefix length  
-! refactor  
-? custom prefix style (make it more distinct)  
