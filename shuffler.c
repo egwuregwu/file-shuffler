@@ -13,15 +13,9 @@ int main(int argc, char* argv[])
 { 
     argv[0] = argv[0] + 2;
     //by default, argv[0] starts with a "./"
-
-    char workingDirectory[150];
     
-    system("pwd > out");
 
     FILE *outputFile;
-    outputFile = fopen("out", "r");
-    fgets(workingDirectory, 150, outputFile);
-    fclose(outputFile);
 
     system("ls > out");
 
@@ -44,25 +38,9 @@ int main(int argc, char* argv[])
 
     system("rm -f out");
 
-
-    if (strncmp(workingDirectory, "F:\\", 3) == 0)
+    for (int i = 0; i < fileCount; i++)
     {
-    start:
-        for (int i = 0; i < fileCount; i++)
-        {
-            renameFile(files[i], argv[0]);
-        }
-        
-    } else {
-        printf(
-            "Using this outside of your USB drive is not recommended, are you sure?\n"
-            "Type 'y' to continue or 'n' to terminate\n"
-            "[y/n]\n"
-        );
-        char choice[4];
-        fgets(choice, 3, stdin);
-        if (choice[0] == 'y' || choice[0] == 'Y')
-            goto start;
+        renameFile(files[i], argv[0]);
     }
 
     return 0;
