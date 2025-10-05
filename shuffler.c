@@ -11,11 +11,7 @@ char HEX_VALUES[] = "0123456789ABCDEF";
 
 int main(int argc, char* argv[])
 { 
-    for (char* i = argv[0]; *(i+2); i++)
-    {    
-        *i = *(i+2);
-        *(i+1) = '\0';
-    }
+    argv[0] = argv[0] + 2;
     //by default, argv[0] starts with a "./"
 
     char workingDirectory[150];
