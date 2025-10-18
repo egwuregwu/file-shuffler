@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
+#include <dirent.h>
 
 #define HEX_LENGTH 2
 
@@ -14,37 +15,16 @@ int main(int argc, char* argv[])
 { 
     argv[0] = argv[0] + 2;
     //by default, argv[0] starts with a "./"
-    
 
-    FILE *outputFile;
+    struct dirent* entry;
+    DIR* directory;
 
-    system("ls > out");
-
-    outputFile = fopen("out", "r");
-
-    char files[1000][150];
-    char buffer[150];
-
-    int fileCount = 1;
-
-    for (int i = 0;; i++)
-    {       //null means EOF !!
-        if (fgets(buffer, 150, outputFile) == NULL || buffer[0] == '\n')
-            break;
-        strcpy(files[i], buffer);
-        fileCount++;
-    }
-
-    fclose(outputFile);
-
-    system("rm -f out");
+    directory = opendir(".");
 
     srand(time(NULL));
 
-    for (int i = 0; i < fileCount; i++)
-    {
-        renameFile(files[i], argv[0]);
-    }
+    while ((entry = readdir(directory)))
+        renameFile(entry->d_name, argv[0]);
 
     return 0;
 }
@@ -61,8 +41,9 @@ void renameFile(char* file_name, char* main_name)
     
     if (
         strcmp(file_name, main_name) == 0 || 
-        strcmp(file_name, "shuffler.c") == 0 || 
-        strcmp(file_name, "out") == 0 ||
+        strcmp(file_name, "shuffler.c") == 0 ||
+        strcmp(file_name, "..") == 0 ||
+        strcmp(file_name, ".") == 0 ||
         strcmp(file_name, "") == 0
     )
         return;
